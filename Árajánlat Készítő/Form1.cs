@@ -23,7 +23,6 @@ namespace Árajánlat_Készítő
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            LoadCheckboxList(checkedListBox1, products);
         }
 
 
@@ -33,7 +32,7 @@ namespace Árajánlat_Készítő
 
             if (newElementName != null && newElementName != "")
             {
-                products.Add(new Products(Name = newElementName));
+                products.Add(new Products(newElementName, false));
                 textBox1.Text = null;
                 newElementName = null;
 
@@ -47,7 +46,7 @@ namespace Árajánlat_Készítő
             clb.Items.Clear();
             foreach (var item in productsList)
             {
-                clb.Items.Add(item.Name);
+                clb.Items.Add(item.Name, item.IsChecked);
             }
         }
 
@@ -84,6 +83,7 @@ namespace Árajánlat_Készítő
                 switch (dr)
                 {
                     case DialogResult.Yes:
+                        GetListDatas(products, checkedListBox1);
                         save.SaveProducts(products, AskUser_SuccessfulSave);
                         break;
 
@@ -96,7 +96,16 @@ namespace Árajánlat_Készítő
             }
             else
             {
+                GetListDatas(products, checkedListBox1);
                 save.SaveProducts(products, AskUser_SuccessfulSave);
+            }
+        }
+
+        private void GetListDatas(List<Products> productsList, CheckedListBox clb)
+        {
+            for (int i = 0; i < productsList.Count; i++)
+            {
+                productsList[i].IsChecked = clb.GetItemChecked(i);
             }
         }
 

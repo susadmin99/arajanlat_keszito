@@ -20,7 +20,7 @@ namespace Árajánlat_Készítő
                 string[] productsToFile = new string[products.Count];
                 for (int i = 0; i < products.Count; i++)
                 {
-                    productsToFile[i] = products[i].Name;
+                    productsToFile[i] = products[i].Name + ";" + products[i].ReturnString();
                 }
                 File.WriteAllLines("Saves/products.txt", productsToFile);
                 au?.Invoke();
@@ -30,12 +30,12 @@ namespace Árajánlat_Készítő
                 string[] productsToFile = new string[products.Count];
                 for (int i = 0; i < products.Count; i++)
                 {
-                    productsToFile[i] = products[i].Name;
+                    productsToFile[i] = products[i].Name + ";" + products[i].ReturnString();
                 }
                 File.WriteAllLines("Saves/products.txt", productsToFile);
                 au?.Invoke();
             }
-            
+
         }
 
         public void RetrieveProducts(List<Products> products, AskUser au)
@@ -44,9 +44,13 @@ namespace Árajánlat_Készítő
             {
                 string[] fileToList = new string[File.ReadAllLines("Saves/products.txt").Length];
                 fileToList = File.ReadAllLines("Saves/products.txt");
+
+                Products boolInput = new Products(null, false);
+                string load;
                 for (int i = 0; i < fileToList.Length; i++)
                 {
-                    products.Add(new Products(fileToList[i]));
+                    load = fileToList[i].Split(';')[1];
+                    products.Add(new Products(fileToList[i].Split(';')[0], boolInput.StringToBool(load)));
                 }
             }
             else
@@ -56,3 +60,4 @@ namespace Árajánlat_Készítő
         }
     }
 }
+
